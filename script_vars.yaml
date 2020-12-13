@@ -1,0 +1,10 @@
+project_name: helloworld
+git_repo: "https://darshan27desai:Wh!tedw8rf@github.com/darshan27desai/helloworld.git"
+local_path: /Volumes/airDisk/workspace/ansible/helloworld
+baseline_branch: develop
+release_channel1: releases/channel1
+release_channel2: releases/channel2
+channel1_artifactId: helloworld-channel1
+channel2_artifactId: helloworld-channel2
+channel1_api: helloworld-channel1
+channel2_api: helloworld-channel2 
