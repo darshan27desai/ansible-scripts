@@ -1,0 +1,60 @@
+- hosts: localhost
+  tasks:
+        - name: clean up
+          shell: rm -rf helloworld
+        - name: clone project from github
+          shell: git clone https://darshan27desai:Wh!tedw8rf@github.com/darshan27desai/helloworld.git
+        - name: traverse to repository and checkout channel1 code
+          shell:  cd /Volumes/airDisk/workspace/ansible/helloworld && git checkout develop
+        - name: compile the package for channel1
+          shell:  cd /Volumes/airDisk/workspace/ansible/helloworld && mvn clean package
+          register: mvn_result
+        - name: Output of compilation of package for channel1
+          debug:
+            var: mvn_result   
+        - name: Operations for channel1
+          shell:  cd /Volumes/airDisk/workspace/ansible/helloworld  
+                  && git checkout -b releases/channel1
+                  && git push origin releases/channel1
+          register: channl1_result
+        - name: Output of operations for channel1
+          debug:
+            var: channl1_result
+        - name: Branch checkout for channel2
+          shell:  cd /Volumes/airDisk/workspace/ansible/helloworld
+                  && git checkout -b releases/channel2
+          register: channl2_checkout_result
+        - name: Output of branch checkout for channel2
+          debug:
+            var: channl2_checkout_result           
+        - name: Update pom artifactId for API
+          replace: 
+                  path: /Volumes/airDisk/workspace/ansible/helloworld/pom.xml 
+                  regexp: '<artifactId>helloworld-channel1</artifactId>'
+                  replace: '<artifactId>helloworld-channel2</artifactId>'
+          register: pom_artifactId_result
+        - name: Output of Update pom artifactId for API
+          debug:
+            var: pom_artifactId_result          
+        - name: Update name of API in pom.xml
+          replace: 
+                  path: /Volumes/airDisk/workspace/ansible/helloworld/pom.xml 
+                  regexp: '<name>helloworld-channel1</name>'
+                  replace: '<name>helloworld-channel2</name>'
+          register: pom_api_result
+        - name: compile the package for channel2
+          shell:  cd /Volumes/airDisk/workspace/ansible/helloworld && mvn clean package
+          register: mvn_result
+        - name: Output of compilation of package for channel2
+          debug:
+            var: mvn_result           
+        - name: Git Operations for channel2
+          shell:  cd /Volumes/airDisk/workspace/ansible/helloworld  
+                  && git commit -am "update channel specific details"
+                  && git push origin releases/channel2
+          register: channl2_result
+        - name: Output Git Operations for channel2
+          debug:
+            var: channl2_result                              
+          
+                                  
