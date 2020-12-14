@@ -4,7 +4,10 @@ local_path: /Volumes/airDisk/workspace/ansible/helloworld
 baseline_branch: develop
 release_channel1: releases/channel1
 release_channel2: releases/channel2
+release_channel3: releases/channel3
 channel1_artifactId: helloworld-channel1
 channel2_artifactId: helloworld-channel2
+channel3_artifactId: helloworld-channel3
 channel1_api: helloworld-channel1
-channel2_api: helloworld-channel2 
+channel2_api: helloworld-channel2
+channel3_api: helloworld-channel3 

@@ -44,6 +44,12 @@
                   regexp: "<name>{{ channel1_api }}</name>"
                   replace: "<name>{{ channel2_api }}</name>"
           register: pom_api_result
+        - name: Update to enable channel2 features
+          replace: 
+                  path: "{{local_path}}/src/main/resources/application.properties"
+                  regexp: "spring.profiles.active=channel1"
+                  replace: "spring.profiles.active=channel2"
+          register: enable_channel2_result          
         - name: compile the package for channel2
           shell:  cd {{ local_path }} && mvn clean package
           register: mvn_result
@@ -54,9 +60,50 @@
           shell:  cd {{ local_path }}  
                   && git commit -am "update channel specific details"
                   && git push origin {{ release_channel2 }}
-          register: channl2_result
-        - name: Output Git Operations for channel2
+          register: channel3_result
+        - name: Output Git Operations for channel3
           debug:
-            var: channl2_result                              
-          
+            var: channel3_result                            
+        - name: Branch checkout for channel3
+          shell:  cd {{ local_path }}
+                  && git checkout -b {{ release_channel3 }}
+          register: channel3_checkout_result
+        - name: Output of branch checkout for channel3
+          debug:
+            var: channel3_checkout_result           
+        - name: Update pom artifactId for API
+          replace: 
+                  path: "{{local_path}}/pom.xml" 
+                  regexp: "<artifactId>{{ channel2_artifactId}}</artifactId>"
+                  replace: "<artifactId>{{ channel3_artifactId }}</artifactId>"
+          register: pom_artifactId_result
+        - name: Output of Update pom artifactId for API
+          debug:
+            var: pom_artifactId_result          
+        - name: Update name of API in pom.xml
+          replace: 
+                  path: "{{local_path}}/pom.xml"
+                  regexp: "<name>{{ channel2_api }}</name>"
+                  replace: "<name>{{ channel3_api }}</name>"
+          register: pom_api_result
+        - name: Update to enable channel2 features
+          replace: 
+                  path: "{{local_path}}/src/main/resources/application.properties"
+                  regexp: "spring.profiles.active=channel2"
+                  replace: "spring.profiles.active=channel3"
+          register: enable_channel2_result            
+        - name: compile the package for channel3
+          shell:  cd {{ local_path }} && mvn clean package
+          register: mvn_result
+        - name: Output of compilation of package for channel2
+          debug:
+            var: mvn_result           
+        - name: Git Operations for channel3
+          shell:  cd {{ local_path }}  
+                  && git commit -am "update channel specific details"
+                  && git push origin {{ release_channel3 }}
+          register: channel3_result
+        - name: Output Git Operations for channel3
+          debug:
+            var: channel3_result         
                                   
